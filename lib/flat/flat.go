@@ -51,7 +51,7 @@ func pop(stack *[]interface{}) {
 }
 
 func flatRec(node *yaml.Node, name string, stack *[]interface{}, result *orderedmap.OrderedMap, separator string) {
-	if node.Kind == yaml.MappingNode {
+	if node.Kind == yaml.MappingNode && len(*(keys(node))) > 0 {
 		// Get Keys
 		nodeKeys := keys(node)
 		nodeValues := values(node)
@@ -61,10 +61,11 @@ func flatRec(node *yaml.Node, name string, stack *[]interface{}, result *ordered
 			k := (*nodeKeys)[i]
 			v := (*nodeValues)[i]
 			*stack = append(*stack, k)
+			//fmt.Printf("stack: %#v, element: %#v counter:%#v len:%#v\n", stack, v, i, len(*nodeKeys))
 			flatRec(v.(*yaml.Node), k.(string), stack, result, separator)
 		}
 		pop(stack)
-	} else if node.Kind == yaml.SequenceNode {
+	} else if node.Kind == yaml.SequenceNode && len(node.Content) > 0 {
 		for i, e := range node.Content {
 			// append index to stack
 			*stack = append(*stack, i)
@@ -73,9 +74,15 @@ func flatRec(node *yaml.Node, name string, stack *[]interface{}, result *ordered
 			//fmt.Printf("stack: %#v, element: %#v counter:%#v len:%#v\n", stack, e, i, len(node.Content))
 		}
 		pop(stack)
-	} else if node.Kind == yaml.ScalarNode {
+	} else /*if node.Kind == yaml.ScalarNode*/ {
+		value := node.Value
+		if node.Kind == yaml.MappingNode {
+			value = "{}"
+		} else if node.Kind == yaml.SequenceNode {
+			value = "[]"
+		}
 		formatted_keys := formatKeys(stack, separator)
-		(*result).Set(formatted_keys, node.Value)
+		(*result).Set(formatted_keys, value)
 		//fmt.Printf("stack: %#v, element: %#v\n", stack, node.Value)
 		pop(stack)
 	}
