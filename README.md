@@ -15,6 +15,11 @@ It also helps me  a lot when writting kubernetes, helm charts and cloudformation
 3. Extract
 4. Save the flat binary to a directory in your path
 
+With one-liner: 
+```
+curl 'https://github.com/tlopo-go/flat/releases/download/v0.1.2/flat_0.1.2_darwin_amd64.tar.gz' -s -L | tar -C /usr/local/bin  -x flat
+```
+
 ## Usage 
 
 Flattening using the default separator ` | `: 
