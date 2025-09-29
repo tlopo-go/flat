@@ -20,6 +20,11 @@ With one-liner:
 curl 'https://github.com/tlopo-go/flat/releases/download/v0.1.2/flat_0.1.2_darwin_amd64.tar.gz' -s -L | tar -C /usr/local/bin  -x flat
 ```
 
+One-liner on windows git-bash
+```
+curl 'https://github.com/tlopo-go/flat/releases/download/v0.1.2/flat_0.1.2_windows_amd64.tar.gz' -s -L | tar -zC /usr/bin  -x flat.exe
+```
+
 ## Usage 
 
 Flattening using the default separator ` | `: 
